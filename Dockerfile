@@ -2,7 +2,7 @@ FROM node:12.22.12-alpine AS base
 
 ENV NODE_ENV=production
 
-RUN npm i -g npm@latest
+RUN npm i -g npm@6.14.16
 
 WORKDIR /misskey
 
@@ -19,10 +19,10 @@ RUN apk add --no-cache \
     make \
     nasm \
     pkgconfig \
-    python \
+    python3 \
     zlib-dev
 
-COPY package.json ./
+COPY package.json yarn.lock ./
 RUN yarn install
 COPY . ./
 RUN yarn build
