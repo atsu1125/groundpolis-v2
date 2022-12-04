@@ -122,6 +122,10 @@
 				<ui-textarea v-model="reactions">
 					{{ $t('@._settings.reactions') }}<template #desc>{{ $t('@._settings.reactions-description') }}</template>
 				</ui-textarea>
+				<ui-horizon-group>
+					<ui-button @click="save('reactions', reactions.trim().split('\n'))" primary><fa :icon="faSave"/> {{ $t('@._settings.save') }}</ui-button>
+					<ui-button @click="previewReaction()" ref="reactionsPreviewButton"><fa :icon="faEye"/> {{ $t('@._settings.preview') }}</ui-button>
+				</ui-horizon-group>
 			</section> -->
 
 			<section>
@@ -133,7 +137,7 @@
 
 			<section>
 				<header>{{ $t('@._settings.note-visibility') }}</header>
-				<ui-switch v-model="rememberNoteVisibility">{{ $t('@._settings.remember-note-visibility') }}</ui-switch>				
+				<ui-switch v-model="rememberNoteVisibility">{{ $t('@._settings.remember-note-visibility') }}</ui-switch>
 				<section>
 					<header>{{ $t('@._settings.default-note-visibility') }}</header>
 					<ui-select v-model="defaultNoteVisibility">
@@ -150,7 +154,7 @@
 					<!-- Home -->
 					<ui-select v-model="homeNoteVisibility">
 						<template #label>{{ $t('@._settings.visibility-switch-home') }}</template>
-						<option v-for="visibility in visibilities" :value="visibility" :key=visibility>{{ $t(`@.note-visibility.${visibility}`) }}</option>						
+						<option v-for="visibility in visibilities" :value="visibility" :key=visibility>{{ $t(`@.note-visibility.${visibility}`) }}</option>
 						<option value="default">{{ $t('@._settings.default-note-visibility') }}</option>
 					</ui-select>
 					<!-- Local -->
@@ -158,19 +162,19 @@
 						<template #label>{{ $t('@._settings.visibility-switch-local') }}</template>
 						<option v-for="visibility in visibilities" :value="visibility" :key=visibility>{{ $t(`@.note-visibility.${visibility}`) }}</option>
 						<option value="default">{{ $t('@._settings.default-note-visibility') }}</option>
-					</ui-select>					
+					</ui-select>
 					<!-- Hybrid -->
 					<ui-select v-model="hybridNoteVisibility">
 						<template #label>{{ $t('@._settings.visibility-switch-hybrid') }}</template>
 						<option v-for="visibility in visibilities" :value="visibility" :key=visibility>{{ $t(`@.note-visibility.${visibility}`) }}</option>
 						<option value="default">{{ $t('@._settings.default-note-visibility') }}</option>
-					</ui-select>					
+					</ui-select>
 					<!-- Global -->
 					<ui-select v-model="globalNoteVisibility">
 						<template #label>{{ $t('@._settings.visibility-switch-global') }}</template>
 						<option v-for="visibility in visibilities" :value="visibility" :key=visibility>{{ $t(`@.note-visibility.${visibility}`) }}</option>
 						<option value="default">{{ $t('@._settings.default-note-visibility') }}</option>
-					</ui-select>					
+					</ui-select>
 				</template>
 			</section>
 
@@ -269,7 +273,7 @@
 		<x-mute-and-block/>
 	</template>
 
-	
+
 	<template v-if="page == null || page == 'apps'">
 		<ui-card>
 			<template #title><fa icon="puzzle-piece"/> {{ $t('@._settings.apps') }}</template>
@@ -278,7 +282,7 @@
 			</section>
 		</ui-card>
 	</template>
-	
+
 
 	<template v-if="page == null || page == 'security'">
 		<ui-card>
@@ -356,11 +360,12 @@ import XApi from './api.vue';
 import XLanguage from './language.vue';
 import XAppType from './app-type.vue';
 import XNotification from './notification.vue';
+import MkReactionPicker from '../reaction-picker.vue';
 
 import { url, version } from '../../../../config';
 import checkForUpdate from '../../../scripts/check-for-update';
 import { formatTimeString } from '../../../../../../misc/format-time-string';
-import { faSave } from '@fortawesome/free-regular-svg-icons';
+import { faSave, faEye } from '@fortawesome/free-regular-svg-icons';
 
 export default Vue.extend({
 	i18n: i18n(),
@@ -391,6 +396,7 @@ export default Vue.extend({
 		return {
 			meta: null,
 			version,
+			reactions: this.$store.state.settings.reactions.join('\n'),
 			webSearchEngine: this.$store.state.settings.webSearchEngine,
 			pastedFileName : this.$store.state.settings.pastedFileName,
 			latestVersion: undefined,
@@ -406,7 +412,7 @@ export default Vue.extend({
 				'local-home',
 				'local-followers',
 			],
-			faSave
+			faSave, faEye
 		};
 	},
 	watch: {
@@ -488,11 +494,6 @@ export default Vue.extend({
 		disableViaMobile: {
 			get() { return this.$store.state.settings.disableViaMobile; },
 			set(value) { this.$store.dispatch('settings/set', { key: 'disableViaMobile', value }); }
-		},
-
-		reactions: {
-			get() { return this.$store.state.settings.reactions.join('\n'); },
-			set(value: string) { this.$store.dispatch('settings/set', { key: 'reactions', value: value.trim().split('\n') }); }
 		},
 
 		useShadow: {
@@ -756,6 +757,16 @@ export default Vue.extend({
 		pastedFileNamePreview() {
 			return `${formatTimeString(new Date(), this.pastedFileName).replace(/{{number}}/g, `1`)}.png`
 		},
+		previewReaction() {
+			const picker = this.$root.new(MkReactionPicker, {
+				source: this.$refs.reactionsPreviewButton.$el,
+				reactions: this.reactions.trim().split('\n'),
+				showFocus: false,
+			});
+			picker.$once('chosen', reaction => {
+				picker.close();
+			});
+		}
 	}
 });
 </script>
