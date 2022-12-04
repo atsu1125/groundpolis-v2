@@ -1,13 +1,14 @@
-**このリポジトリは古いです。新たなリポジトリは https://github.com/Groundpolis/Groundpolis です。今後、こちらのリポジトリはメンテナンスされません。**
+これはGroundpolis v2のフォークです。  
+This is the fork of Groundpolis v2.  
 
 ----
 
-[![Groundpolis](/assets/title.svg)](https://social.xeltica.work/)
+![Groundpolis](/assets/title.svg)
 ================================================================
 
 **A forever evolving, sophisticated microblogging platform.**
 
-[Groundpolis](https://social.xeltica.work") は [Misskey](https://github.com/xeltica/groundpolis)をベースとしたマイクロブログサービスです。
+Groundpolis v2 は [Misskey](https://github.com/misskey-dev/misskey) 11.37.1 をベースとしたマイクロブログサービスです。
 
 オリジナル版との変更点
 --------
@@ -18,7 +19,7 @@
 
 ### Copyright ###
 
-- Original Copyright (c) 2014-2019 syuilo
+- Original Copyright (c) 2014-2020 syuilo
 - Forked Copyright (c) 2019 Xeltica
 
 Groundpolis is open-source software licensed under the [GNU AGPLv3](LICENSE).
