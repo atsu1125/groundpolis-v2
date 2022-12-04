@@ -319,6 +319,7 @@ common:
     saved: "Saved"
     home-profile: "Classic-mode profile"
     deck-profile: "Deck-mode profile"
+    preview: "Preview"
     room: "Room"
     _room:
       graphicsQuality: "Graphics Quality"
@@ -1417,9 +1418,9 @@ admin/views/charts.vue:
   charts:
     federation-instances: "The number of instances: increase/decrease"
     federation-instances-total: "Total number of instances"
-    notes: "The number of posts: increase/decrease (Combined)"
-    local-notes: "The number of posts: increase/decrease (Local)"
-    remote-notes: "The number of posts: increase/decrease (Remote)"
+    notes: "Increase, or decrease in the number of posts (Combined)"
+    local-notes: "Increase, or decrease in the number of posts (Local)"
+    remote-notes: "Increase, or decrease in the number of posts (Remote)"
     notes-total: "Total posts"
     users: "The number of users: increase/decrease"
     users-total: "Total users"
@@ -1599,7 +1600,7 @@ admin/views/federation.vue:
   chart-srcs:
     requests: "Requests"
     users: "Increase, or decrease in the number of users"
-    users-total: "Total number of users"
+    users-total: "Users in total"
     notes: "Increase, or decrease in the number of notes"
     notes-total: "Total number of notes"
     ff: "Increase of followers"

@@ -4,7 +4,6 @@ import config from '../../../config';
 import Resolver from '../resolver';
 import { resolveImage } from './image';
 import { isCollectionOrOrderedCollection, isCollection, IPerson, getApId } from '../type';
-import { DriveFile } from '../../../models/entities/drive-file';
 import { fromHtml } from '../../../mfm/fromHtml';
 import { resolveNote, extractEmojis } from './note';
 import { registerOrFetchInstanceDoc } from '../../../services/register-or-fetch-instance-doc';
@@ -201,18 +200,18 @@ export async function createPerson(uri: string, resolver?: Resolver): Promise<Us
 	updateUsertags(user!, tags);
 
 	//#region アバターとヘッダー画像をフェッチ
-	const [avatar, banner] = (await Promise.all<DriveFile | null>([
+	const [avatar, banner] = await Promise.all([
 		person.icon,
 		person.image
 	].map(img =>
 		img == null
 			? Promise.resolve(null)
 			: resolveImage(user!, img).catch(() => null)
-	)));
+	));
 
 	const avatarId = avatar ? avatar.id : null;
 	const bannerId = banner ? banner.id : null;
-	const avatarUrl = avatar ? DriveFiles.getPublicUrl(avatar) : null;
+	const avatarUrl = avatar ? DriveFiles.getPublicUrl(avatar, true) : null;
 	const bannerUrl = banner ? DriveFiles.getPublicUrl(banner) : null;
 	const avatarColor = avatar && avatar.properties.avgColor ? avatar.properties.avgColor : null;
 	const bannerColor = banner && banner.properties.avgColor ? banner.properties.avgColor : null;
@@ -290,14 +289,14 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 	logger.info(`Updating the Person: ${person.id}`);
 
 	// アバターとヘッダー画像をフェッチ
-	const [avatar, banner] = (await Promise.all<DriveFile | null>([
+	const [avatar, banner] = await Promise.all([
 		person.icon,
 		person.image
 	].map(img =>
 		img == null
 			? Promise.resolve(null)
 			: resolveImage(exist, img).catch(() => null)
-	)));
+	));
 
 	// カスタム絵文字取得
 	const emojis = await extractEmojis(person.tag || [], exist.host).catch(e => {
@@ -326,7 +325,7 @@ export async function updatePerson(uri: string, resolver?: Resolver | null, hint
 
 	if (avatar) {
 		updates.avatarId = avatar.id;
-		updates.avatarUrl = DriveFiles.getPublicUrl(avatar);
+		updates.avatarUrl = DriveFiles.getPublicUrl(avatar, true);
 		updates.avatarColor = avatar.properties.avgColor ? avatar.properties.avgColor : null;
 	}
 

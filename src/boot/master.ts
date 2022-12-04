@@ -1,6 +1,6 @@
 import * as os from 'os';
 import * as cluster from 'cluster';
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 import * as portscanner from 'portscanner';
 import * as isRoot from 'is-root';
 
@@ -11,14 +11,15 @@ import { lessThan } from '../prelude/array';
 import { program } from '../argv';
 import { showMachineInfo } from '../misc/show-machine-info';
 import { initDb } from '../db/postgre';
+import * as meta from '../meta.json';
 
 const logger = new Logger('core', 'cyan');
 const bootLogger = logger.createSubLogger('boot', 'magenta', false);
 
-function greet(config: Config) {
+function greet() {
 	if (!program.quiet) {
 		//#region Groundpolis logo
-		const v = `v${config.version}`;
+		const v = `v${meta.version}`;
 		// tslint:disable:quotemark
 		console.log("   ___                      _           _ _    ");
 		console.log("  / __|_ _ ___ _  _ _ _  __| |_ __  ___| (_)___");
@@ -38,7 +39,7 @@ function greet(config: Config) {
 	}
 
 	bootLogger.info('Welcome to Groundpolis!');
-	bootLogger.info(`Groundpolis v${config.version}`, null, true);
+	bootLogger.info(`Groundpolis v${meta.version}`, null, true);
 }
 
 /**
@@ -48,10 +49,10 @@ export async function masterMain() {
 	let config!: Config;
 
 	try {
+		greet();
+
 		// initialize app
 		config = await init();
-
-		greet(config);
 
 		if (config.port == null || Number.isNaN(config.port)) {
 			bootLogger.error('The port is not configured. Please configure port.', null, true);
