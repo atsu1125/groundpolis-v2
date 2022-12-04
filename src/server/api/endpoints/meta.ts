@@ -144,6 +144,7 @@ export default define(meta, async (ps, me) => {
 		driveCapacityPerPremiumUserMb: instance.premiumDriveCapacityMb,
 		driveCapacityPerRemoteUserMb: instance.remoteDriveCapacityMb,
 		cacheRemoteFiles: instance.cacheRemoteFiles,
+		proxyRemoteFiles: instance.proxyRemoteFiles,
 		enableRecaptcha: instance.enableRecaptcha,
 		recaptchaSiteKey: instance.recaptchaSiteKey,
 		swPublickey: instance.swPublicKey,

@@ -110,7 +110,8 @@ const getFeed = async (acct: string) => {
 	const { username, host } = parseAcct(acct);
 	const user = await Users.findOne({
 		usernameLower: username.toLowerCase(),
-		host
+		host,
+		isSuspended: false
 	});
 
 	return user && await packFeed(user);
@@ -158,7 +159,8 @@ router.get(['/@:user', '/@:user/:sub'], async (ctx, next) => {
 	const { username, host } = parseAcct(ctx.params.user);
 	const user = await Users.findOne({
 		usernameLower: username.toLowerCase(),
-		host
+		host,
+		isSuspended: false
 	});
 
 	if (user != null) {
@@ -179,6 +181,7 @@ router.get(['/@:user', '/@:user/:sub'], async (ctx, next) => {
 		setCache(ctx, 'public, max-age=30');
 	} else {
 		// リモートユーザーなので
+		// モデレータがAPI経由で参照可能にするために404にはしない
 		await next();
 	}
 });
@@ -186,7 +189,8 @@ router.get(['/@:user', '/@:user/:sub'], async (ctx, next) => {
 router.get('/users/:user', async ctx => {
 	const user = await Users.findOne({
 		id: ctx.params.user,
-		host: null
+		host: null,
+		isSuspended: false
 	});
 
 	if (user == null) {

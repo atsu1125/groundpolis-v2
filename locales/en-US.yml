@@ -740,7 +740,7 @@ common/views/components/integration-settings.vue:
   title: "Service cooperation"
   connect: "Connect"
   disconnect: "Disconnect"
-  connected-to: "You are connected to next account"
+  connected-to: "You are connected to this account"
 common/views/components/github-setting.vue:
   description: "Once you connect your GitHub account to your Groundpolis account, you will be able to see information about your GitHub account on your profile, and you will be able to sign-in via GitHub."
   connected-to: "You are connected to this GitHub account"
@@ -1340,7 +1340,9 @@ admin/views/instance.vue:
   object-storage-s3-info-here: "here"
   object-storage-gcs-info: "If you are going to use Google Cloud Storage as Object Storage, Set the 'Endpoint' as storage.googleapis.com, and keep the 'Region' is blank."
   cache-remote-files: "Cache remote files"
-  cache-remote-files-desc: "Without this parameter, all remote files are linked to their host server directly. This will be an effective solution to save your server storage, however make remote files invisible to users who set direct-link disabled, since no thumbnail will be generated, increase traffic. It is recommended that this parameter set enabled."
+  cache-remote-files-desc: "If disabled, All remote files going to be linked to their origin server directly. This will be an effective solution to save your server storage. However, Since no thumbnail will be generated, It will make increasing data usage, and also may remote files are invisible to users who set direct-link disabled. It is recommended that this config set enabled or enabling the next config, 'Proxy remote files'."
+  proxy-remote-files: "Proxy remote files"
+  proxy-remote-files-desc: "If enabled, Remote files that not stored locally or deleted by storage overusage will be proxied locally and also thumbnails will be generated."
   local-drive-capacity-mb: "Volume of Drive per user"
   premium-drive-capacity-mb: "Volume of Drive per premium user"
   remote-drive-capacity-mb: "Volume of Drive per remote user"
@@ -2076,6 +2078,9 @@ pages:
       _mod:
         arg1: "A"
         arg2: "B"
+      round: "Round decimal"
+      _round:
+        arg1: "Number"
       eq: "A and B are equal"
       _eq:
         arg1: "A"
