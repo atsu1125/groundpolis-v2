@@ -1,6 +1,6 @@
 {
 	"name": "groundpolis",
-	"author": "Xeltica <xeltica@gmail.com>",
+	"author": "Xeltica <xeltica@gmail.com> , atsu1125 <atsuchan@atsuchan.page>",
 	"contributors": [
 		"syuilo <i@syuilo.com>"
 	],
@@ -8,7 +8,7 @@
 	"codename": "daybreak",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/xeltica/groundpolis.git"
+		"url": "https://github.com/atsu1125/groundpolis-v2.git"
 	},
 	"main": "./index.js",
 	"private": true,
